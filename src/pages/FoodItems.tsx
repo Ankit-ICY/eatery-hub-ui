@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft, 
   Plus, 
   Edit3, 
   Trash2, 
@@ -17,6 +16,8 @@ import {
   EyeOff,
   Tag
 } from 'lucide-react';
+import CategoryFilterModal from '../components/CategoryFilterModal';
+import PageHeader from '../components/PageHeader';
 
 // Mock data for food items
 const mockFoodItems = [
@@ -118,7 +119,7 @@ const FoodItems = () => {
   const [foodType, setFoodType] = useState<'all' | 'veg' | 'non_veg'>('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [showFilters, setShowFilters] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   const filteredItems = useMemo(() => {
     return mockFoodItems.filter(item => {
@@ -172,29 +173,24 @@ const FoodItems = () => {
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={handleBack}
-              className="p-2 rounded-xl hover:bg-muted/80 transition-colors"
-            >
-              <ArrowLeft className="h-6 w-6 text-muted-foreground" />
+        <PageHeader
+          title="Menu Items"
+          subtitle="Manage your food and beverage offerings"
+          onBack={handleBack}
+          icon={UtensilsCrossed}
+          action={
+            <button className="bg-gradient-primary text-primary-foreground px-3 py-2 sm:px-4 sm:py-3 rounded-xl shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300 hover:scale-105 flex items-center gap-2 text-sm sm:text-base">
+              <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="hidden sm:inline">Add Item</span>
+              <span className="sm:hidden">Add</span>
             </button>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Menu Items</h1>
-              <p className="text-muted-foreground">Manage your food and beverage offerings</p>
-            </div>
-          </div>
-          <button className="bg-gradient-primary text-primary-foreground px-6 py-3 rounded-xl shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300 hover:scale-105 flex items-center gap-2">
-            <Plus className="h-5 w-5" />
-            Add Item
-          </button>
-        </div>
+          }
+        />
 
         {/* Controls */}
-        <div className="bg-gradient-card rounded-2xl p-6 shadow-elegant-md mb-8">
+        <div className="bg-gradient-card rounded-2xl p-4 sm:p-6 shadow-elegant-md mb-8">
           {/* Search and Filters */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <input
@@ -206,16 +202,17 @@ const FoodItems = () => {
               />
             </div>
             <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="bg-muted hover:bg-muted/80 text-foreground px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-2"
+              onClick={() => setShowCategoryModal(true)}
+              className="bg-muted hover:bg-muted/80 text-foreground px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-2 justify-center sm:justify-start"
             >
               <Filter className="h-5 w-5" />
-              Filters
+              <span className="hidden sm:inline">Category</span>
+              <span className="sm:hidden">Filter</span>
             </button>
           </div>
 
           {/* Veg/Non-Veg Toggle */}
-          <div className="flex items-center gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6">
             <span className="text-sm font-medium text-foreground">Food Type:</span>
             <div className="flex bg-muted/50 rounded-xl p-1">
               {[
@@ -226,41 +223,19 @@ const FoodItems = () => {
                 <button
                   key={type.id}
                   onClick={() => setFoodType(type.id as any)}
-                  className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 ${
+                  className={`px-3 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm ${
                     foodType === type.id
                       ? 'bg-primary text-primary-foreground shadow-sm'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <type.icon className="h-4 w-4" />
-                  {type.label}
+                  <span className="hidden sm:inline">{type.label}</span>
+                  <span className="sm:hidden">{type.label.substring(0, 1)}</span>
                 </button>
               ))}
             </div>
           </div>
-
-          {/* Category Filters */}
-          {showFilters && (
-            <div className="border-t border-border pt-6">
-              <h3 className="text-sm font-medium text-foreground mb-4">Categories</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`p-3 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${
-                      selectedCategory === category.id
-                        ? 'border-primary bg-primary/10 text-primary'
-                        : 'border-border hover:border-primary/50 text-muted-foreground'
-                    }`}
-                  >
-                    <category.icon className="h-5 w-5 mx-auto mb-1" />
-                    <span className="text-xs font-medium">{category.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Group Tabs */}
@@ -269,14 +244,14 @@ const FoodItems = () => {
             <button
               key={tab.id}
               onClick={() => setActiveGroup(tab.id as any)}
-              className={`flex-1 py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 ${
+              className={`flex-1 py-3 px-2 sm:py-4 sm:px-6 rounded-xl flex items-center justify-center gap-1 sm:gap-3 transition-all duration-300 ${
                 activeGroup === tab.id
                   ? 'bg-primary text-primary-foreground shadow-elegant-sm'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
               }`}
             >
-              <tab.icon className="h-5 w-5" />
-              <span className="font-medium">{tab.label}</span>
+              <tab.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="font-medium text-sm sm:text-base">{tab.label}</span>
               <span className={`px-2 py-1 rounded-full text-xs ${
                 activeGroup === tab.id ? 'bg-primary-foreground/20' : 'bg-muted'
               }`}>
@@ -287,11 +262,11 @@ const FoodItems = () => {
         </div>
 
         {/* Food Items Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredItems.map((item) => (
             <div key={item.id} className="bg-gradient-card rounded-2xl overflow-hidden shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300 hover:scale-105">
               {/* Image */}
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-40 sm:h-48 overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.name}
@@ -300,8 +275,8 @@ const FoodItems = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 
                 {/* Food Type Badge */}
-                <div className="absolute top-3 left-3">
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
+                  <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center ${
                     item.food_type === 'veg' ? 'bg-success' : 'bg-destructive'
                   }`}>
                     <div className="w-2 h-2 bg-white rounded-full"></div>
@@ -309,58 +284,58 @@ const FoodItems = () => {
                 </div>
 
                 {/* Availability Badge */}
-                <div className="absolute top-3 right-3">
+                <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${
                     item.is_available 
                       ? 'bg-success/80 text-success-foreground' 
                       : 'bg-muted/80 text-muted-foreground'
                   }`}>
                     {item.is_available ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                    {item.is_available ? 'Available' : 'Unavailable'}
+                    <span className="hidden sm:inline">{item.is_available ? 'Available' : 'Unavailable'}</span>
                   </span>
                 </div>
 
                 {/* Special Tag */}
                 {item.special_tag !== 'none' && (
-                  <div className="absolute bottom-3 left-3">
+                  <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${getSpecialTagColor(item.special_tag)}`}>
                       <Star className="h-3 w-3" />
-                      {getSpecialTagText(item.special_tag)}
+                      <span className="hidden sm:inline">{getSpecialTagText(item.special_tag)}</span>
                     </span>
                   </div>
                 )}
 
                 {/* Price */}
-                <div className="absolute bottom-3 right-3">
-                  <span className="bg-black/80 text-white px-3 py-1 rounded-full text-sm font-bold">
+                <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3">
+                  <span className="bg-black/80 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-bold">
                     ₹{item.price}
                   </span>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-4">
+              <div className="p-3 sm:p-4">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-bold text-foreground text-lg">{item.name}</h3>
+                  <h3 className="font-bold text-foreground text-base sm:text-lg">{item.name}</h3>
                   <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-full flex items-center gap-1">
                     <Tag className="h-3 w-3" />
-                    {item.category.name}
+                    <span className="hidden sm:inline">{item.category.name}</span>
                   </span>
                 </div>
                 
-                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                <p className="text-muted-foreground text-sm mb-3 sm:mb-4 line-clamp-2">
                   {item.description}
                 </p>
 
                 {/* Actions */}
                 <div className="flex gap-2">
-                  <button className="flex-1 bg-primary/10 hover:bg-primary/20 text-primary py-2 px-4 rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2">
+                  <button className="flex-1 bg-primary/10 hover:bg-primary/20 text-primary py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 text-sm">
                     <Edit3 className="h-4 w-4" />
-                    Edit
+                    <span className="hidden sm:inline">Edit</span>
                   </button>
-                  <button className="flex-1 bg-destructive/10 hover:bg-destructive/20 text-destructive py-2 px-4 rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2">
+                  <button className="flex-1 bg-destructive/10 hover:bg-destructive/20 text-destructive py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 text-sm">
                     <Trash2 className="h-4 w-4" />
-                    Delete
+                    <span className="hidden sm:inline">Delete</span>
                   </button>
                 </div>
               </div>
@@ -385,6 +360,16 @@ const FoodItems = () => {
           </div>
         )}
       </div>
+
+      {/* Category Filter Modal */}
+      {showCategoryModal && (
+        <CategoryFilterModal
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+          onClose={() => setShowCategoryModal(false)}
+        />
+      )}
     </div>
   );
 };

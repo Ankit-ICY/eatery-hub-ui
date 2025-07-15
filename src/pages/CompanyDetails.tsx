@@ -306,19 +306,19 @@ const CompanyDetails = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {actionButtons.map((action, index) => (
             <button
               key={index}
               onClick={action.onClick}
-              className={`${action.gradient} ${action.hoverGradient} text-white rounded-2xl p-6 shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300 hover:scale-105 group`}
+              className={`${action.gradient} ${action.hoverGradient} text-white rounded-2xl p-4 sm:p-6 shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300 hover:scale-105 group`}
             >
               <div className="flex flex-col items-center text-center">
-                <div className={`w-16 h-16 ${action.iconBg} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  <action.icon className={`h-8 w-8 ${action.iconColor}`} />
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 ${action.iconBg} rounded-2xl flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <action.icon className={`h-6 w-6 sm:h-8 sm:w-8 ${action.iconColor}`} />
                 </div>
-                <h3 className="text-lg font-bold mb-2">{action.title}</h3>
-                <p className="text-sm opacity-90">{action.description}</p>
+                <h3 className="text-sm sm:text-lg font-bold mb-1 sm:mb-2">{action.title}</h3>
+                <p className="text-xs sm:text-sm opacity-90 hidden sm:block">{action.description}</p>
               </div>
             </button>
           ))}

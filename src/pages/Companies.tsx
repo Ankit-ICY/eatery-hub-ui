@@ -81,9 +81,10 @@ const Companies = () => {
                 Manage your restaurants and cafes
               </p>
             </div>
-            <button className="bg-gradient-primary text-primary-foreground px-6 py-3 rounded-xl shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300 hover:scale-105 flex items-center gap-2">
-              <Plus className="h-5 w-5" />
-              Add Company
+            <button className="bg-gradient-primary text-primary-foreground px-3 py-2 sm:px-6 sm:py-3 rounded-xl shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300 hover:scale-105 flex items-center gap-2 text-sm sm:text-base">
+              <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="hidden sm:inline">Add Company</span>
+              <span className="sm:hidden">Add</span>
             </button>
           </div>
           

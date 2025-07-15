@@ -16,10 +16,10 @@ const Index = () => {
           <div className="w-20 h-20 bg-gradient-primary rounded-3xl flex items-center justify-center mx-auto mb-8">
             <Building2 className="h-10 w-10 text-primary-foreground" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
             Restaurant & Cafe
             <br />
-            <span className="bg-gradient-primary bg-clip-text text-transparent">
+            <span className="bg-gradient-elegant bg-clip-text text-transparent">
               Management System
             </span>
           </h1>

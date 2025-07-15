@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft, 
   User, 
   Mail, 
   Phone, 
@@ -12,6 +11,7 @@ import {
   AtSign,
   CheckCircle
 } from 'lucide-react';
+import PageHeader from '../components/PageHeader';
 
 const AddStaff = () => {
   const { companyId } = useParams();
@@ -82,23 +82,17 @@ const AddStaff = () => {
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <button
-            onClick={handleBack}
-            className="p-2 rounded-xl hover:bg-muted/80 transition-colors"
-          >
-            <ArrowLeft className="h-6 w-6 text-muted-foreground" />
-          </button>
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Add Staff Member</h1>
-            <p className="text-muted-foreground">Invite a new team member to your company</p>
-          </div>
-        </div>
+        <PageHeader
+          title="Add Staff Member"
+          subtitle="Invite a new team member to your company"
+          onBack={handleBack}
+          icon={UserPlus}
+        />
 
         <div className="max-w-2xl mx-auto">
           {/* Success Message */}
           {success && (
-            <div className="bg-gradient-to-r from-success/10 to-success/20 border border-success/20 rounded-2xl p-6 mb-8">
+            <div className="bg-gradient-to-r from-success/10 to-success/20 border border-success/20 rounded-2xl p-4 sm:p-6 mb-8">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-success rounded-full flex items-center justify-center">
                   <CheckCircle className="h-6 w-6 text-success-foreground" />
@@ -116,20 +110,20 @@ const AddStaff = () => {
           {/* Form Card */}
           <div className="bg-gradient-card rounded-3xl shadow-elegant-xl overflow-hidden">
             {/* Header */}
-            <div className="bg-gradient-primary text-primary-foreground p-8">
+            <div className="bg-gradient-primary text-primary-foreground p-4 sm:p-8">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center">
-                  <UserPlus className="h-8 w-8" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/10 rounded-2xl flex items-center justify-center">
+                  <UserPlus className="h-6 w-6 sm:h-8 sm:w-8" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold">Staff Information</h2>
-                  <p className="opacity-90">Fill in the details to add a new staff member</p>
+                  <h2 className="text-xl sm:text-2xl font-bold">Staff Information</h2>
+                  <p className="opacity-90 text-sm sm:text-base">Fill in the details to add a new staff member</p>
                 </div>
               </div>
             </div>
 
             {/* Form */}
-            <div className="p-8">
+            <div className="p-4 sm:p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Name Field */}
                 <div>
@@ -169,11 +163,11 @@ const AddStaff = () => {
                       value={formData.contact}
                       onChange={(e) => handleContactChange(e.target.value)}
                       placeholder="Enter email address or phone number"
-                      className="w-full pl-10 pr-16 py-4 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300"
+                      className="w-full pl-10 pr-20 sm:pr-16 py-4 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300"
                       required
                     />
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
                         <button
                           type="button"
                           onClick={() => setContactType('email')}
@@ -261,7 +255,7 @@ const AddStaff = () => {
           </div>
 
           {/* Info Card */}
-          <div className="bg-gradient-card rounded-2xl p-6 shadow-elegant-md mt-8">
+          <div className="bg-gradient-card rounded-2xl p-4 sm:p-6 shadow-elegant-md mt-8">
             <h3 className="font-bold text-foreground mb-4">What happens next?</h3>
             <div className="space-y-3 text-sm text-muted-foreground">
               <div className="flex items-start gap-3">
