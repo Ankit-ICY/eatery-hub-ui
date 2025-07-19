@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 interface Category {
   id: string;
   name: string;
-  icon: React.ComponentType<any>;
+  icon: any;
 }
 
 interface CategoryFilterModalProps {
@@ -19,42 +19,43 @@ const CategoryFilterModal = ({
   onSelectCategory, 
   onClose 
 }: CategoryFilterModalProps) => {
+  const handleCategorySelect = (categoryId: string) => {
+    onSelectCategory(categoryId);
+    onClose();
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-gradient-card rounded-2xl shadow-elegant-xl w-full max-w-md max-h-[80vh] overflow-hidden">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-gradient-card rounded-2xl shadow-elegant-xl max-w-md w-full max-h-[80vh] overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-elegant text-white p-6 flex items-center justify-between">
-          <h2 className="text-xl font-bold">Filter by Category</h2>
+        <div className="flex items-center justify-between p-6 border-b border-border">
+          <h2 className="text-xl font-bold text-foreground">Select Category</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-muted/80 rounded-lg transition-colors"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 text-muted-foreground" />
           </button>
         </div>
 
-        {/* Categories List */}
+        {/* Categories */}
         <div className="p-6 max-h-96 overflow-y-auto">
           <div className="space-y-2">
             {categories.map((category) => (
               <button
                 key={category.id}
-                onClick={() => {
-                  onSelectCategory(category.id);
-                  onClose();
-                }}
-                className={`w-full p-4 rounded-xl border-2 transition-all duration-300 hover:scale-105 flex items-center gap-3 ${
+                onClick={() => handleCategorySelect(category.id)}
+                className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all duration-300 hover:scale-105 ${
                   selectedCategory === category.id
-                    ? 'border-primary bg-primary/10 text-primary shadow-elegant-sm'
-                    : 'border-border hover:border-primary/50 text-muted-foreground hover:text-foreground'
+                    ? 'bg-primary text-primary-foreground shadow-elegant-sm'
+                    : 'bg-muted/50 hover:bg-muted text-foreground'
                 }`}
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  selectedCategory === category.id ? 'bg-primary/20' : 'bg-muted/50'
-                }`}>
-                  <category.icon className="h-5 w-5" />
-                </div>
+                <category.icon className="h-5 w-5" />
                 <span className="font-medium">{category.name}</span>
+                {selectedCategory === category.id && (
+                  <div className="ml-auto w-2 h-2 bg-primary-foreground rounded-full"></div>
+                )}
               </button>
             ))}
           </div>
